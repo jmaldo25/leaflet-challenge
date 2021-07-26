@@ -15,3 +15,39 @@ L.titleLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}
 // Load in geoJSON data
 var geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
+// var geojson;
+
+// Getting data with D3
+d3.json(geoData, function(data) {
+  // Creating function for style of earthquake data
+  function styleInfo(feature) {
+    return {
+      opacity: 1,
+      fillOpacity: 1,
+      fillColor: getColor(feature.properties.mag),
+      color: "#000000",
+      radius: getRadius(feature.properties.mag),
+      stroke: true,
+      weight: 0.5
+    };
+  }
+  // Creating function to determine color of marker based on magnitude og earthquake
+  function getColor(magnitude) {
+    switch (true) {
+      case magnitude > 5:
+        return "#ea2c2c";
+      case magnitude > 4:
+        return "#ea822c";
+      case magnitude > 3:
+        return "#ee9c00";
+      case magnitude > 2:
+        return "#eecc00";
+      case magnitude > 1:
+        return "#d4ee00";
+      default:
+        return "#98ee00";
+    }
+  }
+  // Creating function to determine radius of each earthquake based on magnitude
+  
+})
