@@ -49,5 +49,48 @@ d3.json(geoData, function(data) {
     }
   }
   // Creating function to determine radius of each earthquake based on magnitude
-  
-})
+  // Also accounting for magnitude of 0 earthquakes
+  function getRadius(magnitude) {
+    if (magnitude === 0) {
+      return 1;
+    }
+    return magnitude * 4;
+  }
+  L.geoJson(data, {
+    pointToLayer: function (feature, latlong) {
+      return L.circleMaker(latlong);
+    },
+    style: styleInfo,
+
+    // Binding a pop up for each layer
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup("Earthquake Magnitude: " + feature.properties.mag + "<br>Earthquake Location:<br>" + feature.properties.place);
+    }
+  }).addTo(myMap);
+
+  // Adding legend
+  var legend = L.control({ position: 'bottomright' });
+
+  legend.onAdd = function (map) {
+    // Creating function to create div for legend
+    var div = L.DomUtil.create('div', 'info legend'),
+    // Including magnitude var
+    grades = [0, 1, 2, 3, 4, 5];
+
+    // Creating legend label
+    div.innerHTML = 'Eathquake<br>Magnitude<br><hr>'
+
+    // Create loop that will creat label for magnitude intesity
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML +=
+        // HTML code to account for spaces and dashes
+        '<i style="background:' + getColor(grades[i] + 1) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+  };
+
+  // Add legend to map
+  legend.addTo(myMap);
+});
