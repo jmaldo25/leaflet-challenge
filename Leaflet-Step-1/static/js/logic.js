@@ -54,16 +54,21 @@ d3.json(geoData, function(data) {
     if (magnitude === 0) {
       return 1;
     }
+
     return magnitude * 4;
   }
+
   L.geoJson(data, {
+
     pointToLayer: function (feature, latlong) {
       return L.circleMaker(latlong);
     },
+
     style: styleInfo,
 
     // Binding a pop up for each layer
     onEachFeature: function (feature, layer) {
+
       layer.bindPopup("Earthquake Magnitude: " + feature.properties.mag + "<br>Earthquake Location:<br>" + feature.properties.place);
     }
   }).addTo(myMap);
@@ -93,4 +98,5 @@ d3.json(geoData, function(data) {
 
   // Add legend to map
   legend.addTo(myMap);
+  
 });
